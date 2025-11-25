@@ -2,160 +2,278 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nicoles Quiz</title>
-
+<title>Happy 19, Nicole! 🎀💜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f8f8f8;
-        margin: 0;
-        padding: 20px;
-        text-align: center;
-    }
+/* ====== GLOBAL ====== */
+body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(180deg, #f8e8ff, #ffffff);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
 
-    #quiz-box {
-        max-width: 500px;
-        margin: auto;
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 0 10px rgb(0 0 0 / 15%);
-    }
+/* Container */
+.container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    max-width: 600px;
+    width: 100%;
+    padding: 25px;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(142, 72, 255, 0.2);
+    border: 1px solid rgba(142, 72, 255, 0.2);
+    animation: fadeIn 1s ease;
+}
 
-    button.option {
-        display: block;
-        width: 100%;
-        margin: 8px 0;
-        padding: 12px;
-        border: 2px solid #333;
-        border-radius: 10px;
-        background: #eee;
-        font-size: 16px;
-        cursor: pointer;
-    }
+/* Title */
+h1 {
+    color: #6a32c8;
+    margin: 0;
+    font-size: 28px;
+    text-align: center;
+}
+h2 {
+    color: #6a32c8;
+    margin-top: 0;
+}
 
-    button.option:hover {
-        background: #ddd;
-    }
+/* Progress Bar */
+.progress {
+    background: #f0d7ff;
+    height: 10px;
+    border-radius: 10px;
+    margin: 18px 0;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #c07bff, #8a37ff);
+    transition: width 0.4s ease;
+    border-radius: 10px;
+}
 
-    input[type="text"] {
-        width: 90%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 2px solid #555;
-        margin-bottom: 10px;
-    }
+/* Puzzle Card */
+.card {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(150, 90, 255, 0.25);
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(150, 90, 255, 0.1);
+    animation: fadeIn 0.5s ease;
+}
 
-    #next-btn {
-        margin-top: 15px;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 10px;
-        background: #3a7;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-    }
+/* Buttons */
+button {
+    background: linear-gradient(135deg, #c07bff, #8a37ff);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 5px 0;
+    width: 100%;
+    transition: 0.2s;
+}
+button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(150, 90, 255, 0.3);
+}
 
-    #next-btn:disabled {
-        background: #9c9c9c;
-        cursor: not-allowed;
-    }
+/* Inputs */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid #d5b8ff;
+    background: #fff7ff;
+    font-size: 14px;
+}
+textarea {
+    height: 120px;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 15px;
+}
+.correct {
+    background: #e8ffd8;
+    border: 1px solid #9ee27c;
+}
+.wrong {
+    background: #ffe6e6;
+    border: 1px solid #ff9f9f;
+}
+
+.hidden { display: none; }
+
+/* Confetti */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
-
 <body>
+<canvas id="confetti-canvas"></canvas>
+<div class="container">
+    <h1>🎀 Happy 19, Nicole! 💜</h1>
+    <p style="text-align:center; color:#7d4be2; margin-bottom:20px;">
+        Löse die Rätsel – du musst jede Frage richtig beantworten! 🎬💜
+    </p>
 
-<div id="quiz-box">
-    <h2 id="question"></h2>
-    <div id="answer-area"></div>
-    <button id="next-btn" disabled>Weiter</button>
+    <div class="progress"><div class="progress-bar"></div></div>
+
+    <div id="puzzleArea" class="card"></div>
+
+    <div id="finalArea" class="hidden">
+        <h2>✨ Geschafft, Birthday Princess! 🎉</h2>
+        <p>
+            Dein Big-Brain hat es geschafft, alle Fragen richtig zu beantworten! Wer hätte das denn erwartet?!<br>
+            Als Belohnung für deine Mühe erhältst Du einen
+            <strong>Kinogutschein für einen Film deiner Wahl</strong>💜🎬
+        </p>
+        <p>
+            Ich wünsche Dir nachträglich nochmal alles Liebe zu deinem Geburtstag, viel Glück, Liebe und Erfolg in deinem neuen Lebensjahr, so wie dass alle deine Träume und Ziele für dieses Jahr erreicht werden. <br>
+            Ich hab Dich ganz doll Lieb und bin froh, Dich meine Schwester nennen zu dürfen, denn ohne Dich wäre mein Leben definitiv viiiiel langweiliger und farbloser.💜
+        </p>
+        <p><strong>LG Dein Bruder</strong></p>
+
+    </div>
 </div>
 
 <script>
+/* ========= PUZZLE DATA ========= */
 const puzzles = [
     { type:"mc", q:"In welchem Jahr wurde Nicole geboren?", options:["2004","2005","2006","2007"], a:"2006" },
-    { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
-    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
-    { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas","Umut","Kinderschokolade","Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
+    { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von Ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
+    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam Straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
+    { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas", "Umut", "Kinderschokolade", "Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
     { type:"text", q:"Rätsel: Ich habe Städte, aber keine Häuser. Ich habe Berge, aber keine Bäume. Ich habe Wasser, aber keine Fische. Was bin ich?", a:"Karte" },
-    { type:"text", q:"Wo war Nicole das erste Mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
+    { type:"text", q:"Wo war Nicole das erste mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
     { type:"text", q:"Welches war Nicoles erstes Konzert?", a:"Schlau aber blond" },
-    { type:"mc", q:"In welches lebensbedrohliche Gewässer hat sich Nicoles großer und heldenhafter Bruder gestürzt, um das Leben ihres heiligen Plüsch-Köters zu retten?", options:["Amazonas","Nil","Niagara-Wasserfälle","Aschaff"], a:"Aschaff" },
-    { type:"mc", q:"Was stiehlt Nicole ihrem Bruder regelmäßig?", options:["Geld","Essen","Ehre","Kleidung"], a:"Kleidung" },
+    { type:"mc", q:"In welches lebensbedrohliche Gewässer hat Nicoles großer und heldenhafter Bruder sich gestürzt, um das Leben ihres heiligen Plüsch-Köters zu retten und dabei sowohl sein Leben, als auch sein magisches, fahrendes Bügelbrett riskiert?", options:["Amazonas","Nil","Niagara-Wasserfälle","Aschaff"], a:"Aschaff"},
+    { type:"mc", q:"Was stiehlt Nicole ihrem Bruder regelmäßig?", options:["Geld","Essen","Ehre","Kleidung"], a:"Kleidung"},
     { type:"mc", q:"Nicole ist die Furzkoboldkönigin", options:["Wahr","Falsch"], a:"Wahr" }
 ];
 
 let index = 0;
-let locked = false;
 
-function loadPuzzle() {
-    locked = false;
-    document.getElementById("next-btn").disabled = true;
+function renderPuzzle() {
+    const p = puzzles[index];
+    const div = document.getElementById("puzzleArea");
+    const progress = document.querySelector(".progress-bar");
 
-    const puzzle = puzzles[index];
-    document.getElementById("question").textContent = puzzle.q;
+    progress.style.width = ((index)/puzzles.length * 100) + "%";
 
-    const area = document.getElementById("answer-area");
-    area.innerHTML = "";
+    div.style.animation = "fadeIn 0.5s ease";
+    
+    div.innerHTML = `
+        <h2>Rätsel ${index+1} von ${puzzles.length}</h2>
+        <p>${p.q}</p>
+        <div id="options"></div>
+        <div id="feedback"></div>
+    `;
 
-    if (puzzle.type === "mc") {
-        puzzle.options.forEach(opt => {
+    if (p.type === "mc") {
+        p.options.forEach(opt => {
             const btn = document.createElement("button");
             btn.textContent = opt;
-            btn.classList.add("option");
-
-            btn.onclick = () => {
-                if (locked) return;
-                locked = true;
-                highlight(btn, opt === puzzle.a);
-                document.getElementById("next-btn").disabled = false;
-            };
-
-            area.appendChild(btn);
+            btn.onclick = () => checkAnswer(opt);
+            document.getElementById("options").appendChild(btn);
         });
-    } else {
-        const input = document.createElement("input");
-        input.type = "text";
 
-        const submit = document.createElement("button");
-        submit.textContent = "Prüfen";
-        submit.style.marginTop = "10px";
-
-        submit.onclick = () => {
-            if (locked) return;
-            locked = true;
-
-            let val = input.value.trim();
-            let correct = val.toLowerCase() === puzzle.a.toLowerCase();
-
-            input.style.background = correct ? "#8f8" : "#f88";
-            document.getElementById("next-btn").disabled = false;
-        };
-
-        area.appendChild(input);
-        area.appendChild(submit);
+    } else if (p.type === "text") {
+        document.getElementById("options").innerHTML = `
+            <input id="answerInput" placeholder="Antwort...">
+            <button onclick="submitText()">Absenden</button>
+        `;
     }
 }
 
-function highlight(btn, correct) {
-    btn.style.background = correct ? "#8f8" : "#f88";
+function submitText() {
+    const val = document.getElementById("answerInput").value.trim().toLowerCase();
+    checkAnswer(val);
 }
 
-document.getElementById("next-btn").onclick = () => {
-    index++;
-    if (index >= puzzles.length) {
-        document.getElementById("quiz-box").innerHTML =
-            "<h2>FERTIG! 🎉 Nicole ist offiziell zertifizierte Quizmeisterin.</h2>";
-    } else {
-        loadPuzzle();
-    }
-};
+function checkAnswer(given) {
+    const correct = puzzles[index].a.toLowerCase();
+    const fb = document.getElementById("feedback");
 
-loadPuzzle();
+    if (given.toLowerCase() === correct) {
+        fb.className = "feedback correct";
+        fb.textContent = "Richtig! 🎉💜";
+
+        setTimeout(() => {
+            index++;
+            if (index >= puzzles.length) finish();
+            else renderPuzzle();
+        }, 1000);
+
+    } else {
+        fb.className = "feedback wrong";
+        fb.textContent = "Leider falsch! Versuch es nochmal 💜";
+    }
+}
+
+/* ========= CONFETTI ========= */
+function finish() {
+    document.getElementById("puzzleArea").classList.add("hidden");
+    document.getElementById("finalArea").classList.remove("hidden");
+    document.querySelector(".progress-bar").style.width = "100%";
+    launchConfetti();
+}
+
+function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const pieces = Array.from({length: 150}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 6 + Math.random() * 6,
+        h: 8 + Math.random() * 8,
+        speed: 2 + Math.random() * 4,
+        color: `hsl(${Math.random()*360}, 80%, 70%)`
+    }));
+
+    function update() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pieces.forEach(p => {
+            p.y += p.speed;
+            if (p.y > canvas.height) p.y = -20;
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, p.w, p.h);
+        });
+        requestAnimationFrame(update);
+    }
+    update();
+}
+
+
+
+renderPuzzle();
 </script>
-
 </body>
 </html>
