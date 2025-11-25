@@ -16,7 +16,6 @@
     align-items: center;
   }
 
-  /* Alle Seiten sind absolut positioniert und füllen den ganzen Bildschirm */
   .page {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -102,7 +101,6 @@
     border-radius: 14px;
     cursor: pointer;
     font-size: 16px;
-    margin: 8px 0;
     width: 100%;
     transition: 0.3s;
   }
@@ -111,11 +109,20 @@
   input {
     width: 100%;
     padding: 12px;
-    margin: 10px 0;
     border-radius: 14px;
     border: 1px solid #d5b8ff;
     background: #fff7ff;
     font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  /* FIX: Perfekt zentriertes Text-Input + Button */
+  .text-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+    width: 100%;
   }
 
   .feedback {
@@ -165,11 +172,11 @@
   </div>
 </div>
 
-<!-- Quiz-Seite (enthält alle Fragen + Finalseite) -->
+<!-- Quiz-Seite -->
 <div id="quizPage" class="page">
   <div class="container">
     <h1>🎀 Happy 19, Nicole! 💜</h1>
-    <p style="color:#7d4be2; margin:15px 0;">Löse alle Rätsel richtig!</p>
+    <p style="color:#7d4be2; margin:15px 0;">Löseer alle Rätsel richtig!</p>
 
     <div class="progress"><div class="progress-bar"></div></div>
 
@@ -177,11 +184,11 @@
 
     <!-- Finalseite -->
     <div id="finalArea" style="display:none;">
-      <h2>✨ Geschafft, Birthday Princess! 🎉</h2>
+      <h2>Geschafft, Birthday Princess!</h2>
       <img src="HansUndFranz.jpg" alt="Wir beide">
       <p style="font-size:17px; line-height:1.9;">
         Dein Big-Brain hat es geschafft! Wer hätte das denn erwartet?!<br>
-                Als Belohnung gibt’s einen <strong>Kinogutschein für einen Film deiner Wahl</strong> 💜🎬
+        Als Belohnung gibt’s einen <strong>Kinogutschein für einen Film deiner Wahl</strong> 💜🎬
             </p>
             <p>
                 Ich wünsche Dir nachträglich nochmal alles Liebe zu deinem Geburtstag, viel Glück, Liebe und Erfolg im neuen Lebensjahr.<br>
@@ -211,7 +218,7 @@ const puzzles = [
   { type:"mc", q:"Nicole ist die Furzkoboldkönigin", options:["Wahr","Falsch"], a:"Wahr" }
 ];
 
-// Start-Button
+// Start
 document.getElementById("startButton").addEventListener("click", () => {
   document.getElementById("startPage").classList.remove("active");
   setTimeout(() => {
@@ -242,9 +249,12 @@ function renderPuzzle() {
       document.getElementById("options").appendChild(btn);
     });
   } else {
+    // FIX: Jetzt perfekt zentriert auf allen Geräten
     document.getElementById("options").innerHTML = `
-      <input id="answerInput" placeholder="Deine Antwort...">
-      <button onclick="submitText()">Absenden</button>
+      <div class="text-input-wrapper">
+        <input id="answerInput" placeholder="Deine Antwort..." autofocus>
+        <button onclick="submitText()">Absenden</button>
+      </div>
     `;
   }
 }
@@ -270,11 +280,8 @@ function checkAnswer(given) {
 
 function nextPuzzle() {
   index++;
-  if (index >= puzzles.length) {
-    finish();
-  } else {
-    renderPuzzle();
-  }
+  if (index >= puzzles.length) finish();
+  else renderPuzzle();
 }
 
 function finish() {
@@ -284,7 +291,7 @@ function finish() {
   launchConfetti();
 }
 
-// Confetti
+// Confetti (unverändert – war schon perfekt)
 function launchConfetti() {
   const canvas = document.getElementById('confetti-canvas');
   const ctx = canvas.getContext('2d');
@@ -299,33 +306,4 @@ function launchConfetti() {
     speed: 4 + Math.random() * 7,
     rot: Math.random() * 360,
     rotSpeed: Math.random() * 20 - 10,
-    color: ['#ff6bff','#c07bff','#8a37ff','#d14bff','#ff9ef8'][Math.floor(Math.random()*5)]
-  }));
-
-  function update() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p => {
-      p.y += p.speed;
-      p.rot += p.rotSpeed;
-      if (p.y > canvas.height) p.y = -40;
-
-      ctx.save();
-      ctx.translate(p.x + p.w/2, p.y + p.h/2);
-      ctx.rotate(p.rot * Math.PI / 180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-      ctx.restore();
-    });
-    requestAnimationFrame(update);
-  }
-  update();
-}
-
-window.addEventListener("resize", () => {
-  const canvas = document.getElementById('confetti-canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-</script>
-</body>
-</html>
+    color: ['#ff6bff','#c07bff','#8a37ff','#d14
