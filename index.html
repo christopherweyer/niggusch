@@ -2,173 +2,79 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Happy 19, Nicole! 🎀💜</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicoles Quiz</title>
+
 <style>
-/* ====== GLOBAL ====== */
-body {
-    margin: 0;
-    font-family: "Poppins", Arial, sans-serif;
-    background: linear-gradient(180deg, #f8e8ff, #ffffff);
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background: #f8f8f8;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
 
-.container {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    max-width: 600px;
-    width: 100%;
-    padding: 25px;
-    border-radius: 22px;
-    box-shadow: 0 8px 30px rgba(142, 72, 255, 0.2);
-    border: 1px solid rgba(142, 72, 255, 0.2);
-    animation: fadeIn 1s ease;
-}
+    #quiz-box {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+    }
 
-h1 {
-    color: #6a32c8;
-    margin: 0;
-    font-size: 28px;
-    text-align: center;
-}
-h2 {
-    color: #6a32c8;
-    margin-top: 0;
-}
+    button.option {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+        padding: 12px;
+        border: 2px solid #333;
+        border-radius: 10px;
+        background: #eee;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-.progress {
-    background: #f0d7ff;
-    height: 10px;
-    border-radius: 10px;
-    margin: 18px 0;
-    overflow: hidden;
-}
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #c07bff, #8a37ff);
-    transition: width 0.4s ease;
-    border-radius: 10px;
-}
+    button.option:hover {
+        background: #ddd;
+    }
 
-.card {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(150, 90, 255, 0.25);
-    padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 4px 18px rgba(150, 90, 255, 0.1);
-    animation: fadeIn 0.5s ease;
-}
+    input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 2px solid #555;
+        margin-bottom: 10px;
+    }
 
-button {
-    background: linear-gradient(135deg, #c07bff, #8a37ff);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 15px;
-    margin: 5px 0;
-    width: 100%;
-    transition: 0.2s;
-}
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 12px rgba(150, 90, 255, 0.3);
-}
+    #next-btn {
+        margin-top: 15px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #3a7;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+    }
 
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 8px;
-    border-radius: 12px;
-    border: 1px solid #d5b8ff;
-    background: #fff7ff;
-    font-size: 14px;
-}
-textarea {
-    height: 120px;
-}
-
-.feedback {
-    margin-top: 12px;
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 15px;
-}
-.correct {
-    background: #e8ffd8;
-    border: 1px solid #9ee27c;
-}
-.wrong {
-    background: #ffe6e6;
-    border: 1px solid #ff9f9f;
-}
-
-.hidden { display: none; }
-
-#confetti-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-}
-
-.final-photo {
-    width: 100%;
-    border-radius: 18px;
-    margin: 20px 0;
-    box-shadow: 0 6px 20px rgba(142, 72, 255, 0.25);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
+    #next-btn:disabled {
+        background: #9c9c9c;
+        cursor: not-allowed;
+    }
 </style>
 </head>
+
 <body>
-<canvas id="confetti-canvas"></canvas>
-<div class="container">
-    <h1>🎀 Happy 19, Nicole! 💜</h1>
-    <p style="text-align:center; color:#7d4be2; margin-bottom:20px;">
-        Löse die Rätsel – du musst jede Frage richtig beantworten! 🎬💜
-    </p>
 
-    <div class="progress"><div class="progress-bar"></div></div>
-
-    <div id="puzzleArea" class="card"></div>
-
-    <div id="finalArea" class="hidden">
-        <h2 style="text-align:center; font-size:28px;">💜 Geschafft, Birthday Princess! 🎉</h2>
-
-        <p style="font-size:16px; line-height:1.6;">
-            Du hast jedes Rätsel richtig beantwortet – dein Big Brain hat wieder zugeschlagen! 😤💜<br>
-            Als Belohnung erhältst du einen <strong style="color:#8a37ff;">Kinogutschein für einen Film deiner Wahl</strong> 🎬✨
-        </p>
-
-        <img src="IMG_20210527_145538.jpg" alt="Foto von uns beiden" class="final-photo">
-
-        <p style="font-size:16px; line-height:1.6;">
-            Ich wünsche dir nachträglich alles Liebe zu deinem Geburtstag, ganz viel Glück, Liebe und Erfolg
-            in deinem neuen Lebensjahr. Ich hab dich unglaublich lieb und bin froh, dich meine Schwester nennen zu dürfen. 💜
-        </p>
-
-        <p style="text-align:right; font-weight:bold; margin-top:30px; color:#6a32c8;">
-            – Dein Bruder
-        </p>
-
-        <audio id="loveSong" src="Nicole die Furzkoboldkönigin.mp3"></audio>
-    </div>
+<div id="quiz-box">
+    <h2 id="question"></h2>
+    <div id="answer-area"></div>
+    <button id="next-btn" disabled>Weiter</button>
 </div>
 
 <script>
-/* ================= PUZZLES ================= */
-
 const puzzles = [
     { type:"mc", q:"In welchem Jahr wurde Nicole geboren?", options:["2004","2005","2006","2007"], a:"2006" },
     { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
@@ -183,149 +89,73 @@ const puzzles = [
 ];
 
 let index = 0;
+let locked = false;
 
-/* ================= RENDER FUNCTION ================ */
+function loadPuzzle() {
+    locked = false;
+    document.getElementById("next-btn").disabled = true;
 
-function renderPuzzle() {
-    const p = puzzles[index];
-    const div = document.getElementById("puzzleArea");
-    const progress = document.querySelector(".progress-bar");
+    const puzzle = puzzles[index];
+    document.getElementById("question").textContent = puzzle.q;
 
-    progress.style.width = ((index) / puzzles.length * 100) + "%";
+    const area = document.getElementById("answer-area");
+    area.innerHTML = "";
 
-    div.innerHTML = `
-        <h2>Rätsel ${index+1} von ${puzzles.length}</h2>
-        <p>${p.q}</p>
-        <div id="options"></div>
-        <div id="feedback"></div>
-    `;
-
-    if (p.type === "mc") {
-        p.options.forEach(opt => {
+    if (puzzle.type === "mc") {
+        puzzle.options.forEach(opt => {
             const btn = document.createElement("button");
             btn.textContent = opt;
-            btn.onclick = () => checkAnswer(opt);
-            document.getElementById("options").appendChild(btn);
+            btn.classList.add("option");
+
+            btn.onclick = () => {
+                if (locked) return;
+                locked = true;
+                highlight(btn, opt === puzzle.a);
+                document.getElementById("next-btn").disabled = false;
+            };
+
+            area.appendChild(btn);
         });
     } else {
-        document.getElementById("options").innerHTML = `
-            <input id="answerInput" placeholder="Antwort...">
-            <button onclick="submitText()">Absenden</button>
-        `;
+        const input = document.createElement("input");
+        input.type = "text";
+
+        const submit = document.createElement("button");
+        submit.textContent = "Prüfen";
+        submit.style.marginTop = "10px";
+
+        submit.onclick = () => {
+            if (locked) return;
+            locked = true;
+
+            let val = input.value.trim();
+            let correct = val.toLowerCase() === puzzle.a.toLowerCase();
+
+            input.style.background = correct ? "#8f8" : "#f88";
+            document.getElementById("next-btn").disabled = false;
+        };
+
+        area.appendChild(input);
+        area.appendChild(submit);
     }
 }
 
-/* ================= ANSWER CHECK ================= */
-
-function submitText() {
-    const val = document.getElementById("answerInput").value.trim().toLowerCase();
-    checkAnswer(val);
+function highlight(btn, correct) {
+    btn.style.background = correct ? "#8f8" : "#f88";
 }
 
-function checkAnswer(userAnswerRaw) {
-    const p = puzzles[index];
-
-    const sanitize = str =>
-        str
-        .replace(/[\u200B-\u200D\uFEFF]/g, "")
-        .replace(/\s+/g, " ")
-        .trim()
-        .toLowerCase();
-
-    const correct = sanitize(p.a);
-    const user = sanitize(userAnswerRaw);
-
-    const feedback = document.getElementById("feedback");
-
-    if (user === correct) {
-        feedback.className = "feedback correct";
-        feedback.textContent = "Richtig! 💜";
-
-        setTimeout(() => {
-            index++;
-            if (index >= puzzles.length) {
-                finish();
-            } else {
-                renderPuzzle();
-            }
-        }, 700);
-
+document.getElementById("next-btn").onclick = () => {
+    index++;
+    if (index >= puzzles.length) {
+        document.getElementById("quiz-box").innerHTML =
+            "<h2>FERTIG! 🎉 Nicole ist offiziell zertifizierte Quizmeisterin.</h2>";
     } else {
-        feedback.className = "feedback wrong";
-        feedback.textContent = "Leider falsch 😢 Versuchs nochmal!";
+        loadPuzzle();
     }
-}
+};
 
-/* ================= END SCREEN ================= */
-
-function finish() {
-    document.querySelector(".progress-bar").style.width = "100%";
-    document.getElementById("puzzleArea").classList.add("hidden");
-
-    const final = document.getElementById("finalArea");
-    final.classList.remove("hidden");
-
-    const song = document.getElementById("loveSong");
-    song.volume = 0.5;
-    song.play();
-
-    startConfetti();
-}
-
-/* ================= CONFETTI ================= */
-
-function startConfetti() {
-    const canvas = document.getElementById("confetti-canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const confetti = [];
-    const count = 250;
-
-    for (let i = 0; i < count; i++) {
-        confetti.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height - canvas.height,
-            r: Math.random() * 6 + 2,
-            d: Math.random() * count,
-            color: `hsl(${Math.random()*360}, 80%, 70%)`,
-            tilt: Math.random() * 5
-        });
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        confetti.forEach((c) => {
-            ctx.beginPath();
-            ctx.fillStyle = c.color;
-            ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-            ctx.fill();
-        });
-
-        update();
-        requestAnimationFrame(draw);
-    }
-
-    function update() {
-        confetti.forEach(c => {
-            c.y += Math.cos(c.d) + 1 + c.r / 2;
-            c.x += Math.sin(c.d);
-
-            if (c.y > canvas.height) {
-                c.y = -10;
-                c.x = Math.random() * canvas.width;
-            }
-        });
-    }
-
-    draw();
-}
-
-/* =============== INIT =============== */
-renderPuzzle();
+loadPuzzle();
 </script>
+
 </body>
 </html>
