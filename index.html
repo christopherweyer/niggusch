@@ -15,7 +15,6 @@ body {
     justify-content: center;
 }
 
-/* Container */
 .container {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
@@ -28,7 +27,6 @@ body {
     animation: fadeIn 1s ease;
 }
 
-/* Title */
 h1 {
     color: #6a32c8;
     margin: 0;
@@ -40,7 +38,6 @@ h2 {
     margin-top: 0;
 }
 
-/* Progress Bar */
 .progress {
     background: #f0d7ff;
     height: 10px;
@@ -56,7 +53,6 @@ h2 {
     border-radius: 10px;
 }
 
-/* Puzzle Card */
 .card {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(150, 90, 255, 0.25);
@@ -66,7 +62,6 @@ h2 {
     animation: fadeIn 0.5s ease;
 }
 
-/* Buttons */
 button {
     background: linear-gradient(135deg, #c07bff, #8a37ff);
     color: white;
@@ -84,7 +79,6 @@ button:hover {
     box-shadow: 0 4px 12px rgba(150, 90, 255, 0.3);
 }
 
-/* Inputs */
 input, textarea {
     width: 100%;
     padding: 10px;
@@ -98,7 +92,6 @@ textarea {
     height: 120px;
 }
 
-/* Feedback */
 .feedback {
     margin-top: 12px;
     padding: 10px;
@@ -116,7 +109,6 @@ textarea {
 
 .hidden { display: none; }
 
-/* Confetti */
 #confetti-canvas {
     position: fixed;
     top: 0;
@@ -126,7 +118,13 @@ textarea {
     pointer-events: none;
 }
 
-/* Animations */
+.final-photo {
+    width: 100%;
+    border-radius: 18px;
+    margin: 20px 0;
+    box-shadow: 0 6px 20px rgba(142, 72, 255, 0.25);
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -146,31 +144,46 @@ textarea {
     <div id="puzzleArea" class="card"></div>
 
     <div id="finalArea" class="hidden">
-        <h2>✨ Geschafft, Birthday Princess! 🎉</h2>
-        <p>
-            Du hast alle Rätsel korrekt gelöst! Als Belohnung erhältst du einen
-            <strong>Kinogutschein für einen Film deiner Wahl</strong>(Bitte ab nächster Woche :P). 💜🎬
+        <h2 style="text-align:center; font-size:28px;">💜 Geschafft, Birthday Princess! 🎉</h2>
+
+        <p style="font-size:16px; line-height:1.6;">
+            Du hast jedes Rätsel richtig beantwortet – dein Big Brain hat wieder zugeschlagen! 😤💜<br>
+            Als Belohnung erhältst du einen <strong style="color:#8a37ff;">Kinogutschein für einen Film deiner Wahl</strong> 🎬✨
         </p>
 
+        <img src="IMG_20210527_145538.jpg" alt="Foto von uns beiden" class="final-photo">
+
+        <p style="font-size:16px; line-height:1.6;">
+            Ich wünsche dir nachträglich alles Liebe zu deinem Geburtstag, ganz viel Glück, Liebe und Erfolg
+            in deinem neuen Lebensjahr. Ich hab dich unglaublich lieb und bin froh, dich meine Schwester nennen zu dürfen. 💜
+        </p>
+
+        <p style="text-align:right; font-weight:bold; margin-top:30px; color:#6a32c8;">
+            – Dein Bruder
+        </p>
+
+        <audio id="loveSong" src="Nicole die Furzkoboldkönigin.mp3"></audio>
     </div>
 </div>
 
 <script>
-/* ========= PUZZLE DATA ========= */
 const puzzles = [
     { type:"mc", q:"In welchem Jahr wurde Nicole geboren?", options:["2004","2005","2006","2007"], a:"2006" },
-    { type:"text", q:"Anagramm von 'LONCEI'?", a:"nicole" },
-    { type:"mc", q:"Welches Genre mag sie am ehesten?", options:["Komödie","Drama","Sci-Fi","Horror"], a:"Komödie" },
-    { type:"text", q:"3 * 7 + 5 = ?", a:"26" },
-    { type:"text", q:"Rätsel: Ich habe Städte aber keine Häuser...", a:"karte" },
-    { type:"text", q:"Folge: 2,4,8,16,... ?", a:"32" },
-    { type:"text", q:"Film Emoji: 🍿👽🌕 ?", a:"e.t." },
-    { type:"mc", q:"Das Wort 'Nicole' hat 6 Buchstaben.", options:["Wahr","Falsch"], a:"Wahr" },
-    { type:"text", q:"Caesar +1: 'ojdf' → ?", a:"pike" },
-    { type:"mc", q:"Lieblingsfarbe? (geraten)", options:["Blau","Rosa","Grün","Lila"], a:"Lila"}
+    { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von Ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
+    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam Straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
+    { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas", "Umut", "Kinderschokolade", "Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
+    { type:"text", q:"Rätsel: Ich habe Städte, aber keine Häuser. Ich habe Berge, aber keine Bäume. Ich habe Wasser, aber keine Fische. Was bin ich?", a:"Karte" },
+    { type:"text", q:"Wo war Nicole das erste mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
+    { type:"text", q:"Welches war Nicoles erstes Konzert?", a:"Schlau aber blond" },
+    { type:"mc", q:"In welches lebensbedrohliche Gewässer hat Nicoles großer und heldenhafter Bruder sich gestürzt, um das Leben ihres heiligen Plüsch-Köters zu retten und dabei sowohl sein Leben, als auch sein magisches, fahrendes Bügelbrett riskiert?", options:["Amazonas","Nil","Niagara-Wasserfälle","Aschaff"], a:"Aschaff"},
+    { type:"mc", q:"Was stiehlt Nicole ihrem Bruder regelmäßig?", options:["Geld","Essen","Ehre","Kleidung"], a:"Kleidung"},
+    { type:"mc", q:"Nicole ist die Furzkoboldkönigin", options:["Wahr","Falsch"], a:"Wahr" }
+
 ];
 
 let index = 0;
+
+/* ================= RENDER FUNCTION ================ */
 
 function renderPuzzle() {
     const p = puzzles[index];
@@ -179,8 +192,6 @@ function renderPuzzle() {
 
     progress.style.width = ((index)/puzzles.length * 100) + "%";
 
-    div.style.animation = "fadeIn 0.5s ease";
-    
     div.innerHTML = `
         <h2>Rätsel ${index+1} von ${puzzles.length}</h2>
         <p>${p.q}</p>
@@ -196,7 +207,7 @@ function renderPuzzle() {
             document.getElementById("options").appendChild(btn);
         });
 
-    } else if (p.type === "text") {
+    } else {
         document.getElementById("options").innerHTML = `
             <input id="answerInput" placeholder="Antwort...">
             <button onclick="submitText()">Absenden</button>
@@ -204,68 +215,109 @@ function renderPuzzle() {
     }
 }
 
+/* ================= ANSWER CHECK ================= */
+
 function submitText() {
     const val = document.getElementById("answerInput").value.trim().toLowerCase();
     checkAnswer(val);
 }
 
-function checkAnswer(given) {
-    const correct = puzzles[index].a.toLowerCase();
-    const fb = document.getElementById("feedback");
+function checkAnswer(userAnswer) {
+    const p = puzzles[index];
+    const correct = p.a.toLowerCase();
 
-    if (given.toLowerCase() === correct) {
-        fb.className = "feedback correct";
-        fb.textContent = "Richtig! 🎉💜";
+    const feedback = document.getElementById("feedback");
+
+    if (userAnswer === correct) {
+        feedback.className = "feedback correct";
+        feedback.textContent = "Richtig! 💜";
 
         setTimeout(() => {
             index++;
-            if (index >= puzzles.length) finish();
-            else renderPuzzle();
-        }, 1000);
+            if (index >= puzzles.length) {
+                finish();
+            } else {
+                renderPuzzle();
+            }
+        }, 800);
 
     } else {
-        fb.className = "feedback wrong";
-        fb.textContent = "Leider falsch! Versuch es nochmal 💜";
+        feedback.className = "feedback wrong";
+        feedback.textContent = "Leider falsch 😢 Versuchs nochmal!";
     }
 }
 
-/* ========= CONFETTI ========= */
+/* =============== ENDING SCREEN ================= */
+
 function finish() {
-    document.getElementById("puzzleArea").classList.add("hidden");
-    document.getElementById("finalArea").classList.remove("hidden");
     document.querySelector(".progress-bar").style.width = "100%";
-    launchConfetti();
+    document.getElementById("puzzleArea").classList.add("hidden");
+
+    const final = document.getElementById("finalArea");
+    final.classList.remove("hidden");
+
+    // Musik abspielen
+    const song = document.getElementById("loveSong");
+    song.volume = 0.5;
+    song.play();
+
+    // Konfetti starten
+    startConfetti();
 }
 
-function launchConfetti() {
-    const canvas = document.getElementById('confetti-canvas');
-    const ctx = canvas.getContext('2d');
+/* ================= CONFETTI ================= */
+
+function startConfetti() {
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const pieces = Array.from({length: 150}, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        w: 6 + Math.random() * 6,
-        h: 8 + Math.random() * 8,
-        speed: 2 + Math.random() * 4,
-        color: `hsl(${Math.random()*360}, 80%, 70%)`
-    }));
+    const confetti = [];
+    const count = 250;
+
+    for (let i = 0; i < count; i++) {
+        confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 2,
+            d: Math.random() * count,
+            color: `hsl(${Math.random()*360}, 80%, 70%)`,
+            tilt: Math.random() * 5
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        confetti.forEach((c, i) => {
+            ctx.beginPath();
+            ctx.fillStyle = c.color;
+            ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        update();
+        requestAnimationFrame(draw);
+    }
 
     function update() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        pieces.forEach(p => {
-            p.y += p.speed;
-            if (p.y > canvas.height) p.y = -20;
-            ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, p.w, p.h);
+        confetti.forEach(c => {
+            c.y += Math.cos(c.d) + 1 + c.r / 2;
+            c.x += Math.sin(c.d);
+
+            if (c.y > canvas.height) {
+                c.y = -10;
+                c.x = Math.random() * canvas.width;
+            }
         });
-        requestAnimationFrame(update);
     }
-    update();
+
+    draw();
 }
 
-
+/* =========================================== */
 
 renderPuzzle();
 </script>
