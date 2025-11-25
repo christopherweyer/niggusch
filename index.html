@@ -167,18 +167,19 @@ textarea {
 </div>
 
 <script>
+/* ================= PUZZLES ================= */
+
 const puzzles = [
     { type:"mc", q:"In welchem Jahr wurde Nicole geboren?", options:["2004","2005","2006","2007"], a:"2006" },
-    { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von Ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
-    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam Straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
-    { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas", "Umut", "Kinderschokolade", "Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
+    { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
+    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
+    { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas","Umut","Kinderschokolade","Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
     { type:"text", q:"Rätsel: Ich habe Städte, aber keine Häuser. Ich habe Berge, aber keine Bäume. Ich habe Wasser, aber keine Fische. Was bin ich?", a:"Karte" },
-    { type:"text", q:"Wo war Nicole das erste mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
+    { type:"text", q:"Wo war Nicole das erste Mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
     { type:"text", q:"Welches war Nicoles erstes Konzert?", a:"Schlau aber blond" },
-    { type:"mc", q:"In welches lebensbedrohliche Gewässer hat Nicoles großer und heldenhafter Bruder sich gestürzt, um das Leben ihres heiligen Plüsch-Köters zu retten und dabei sowohl sein Leben, als auch sein magisches, fahrendes Bügelbrett riskiert?", options:["Amazonas","Nil","Niagara-Wasserfälle","Aschaff"], a:"Aschaff"},
-    { type:"mc", q:"Was stiehlt Nicole ihrem Bruder regelmäßig?", options:["Geld","Essen","Ehre","Kleidung"], a:"Kleidung"},
+    { type:"mc", q:"In welches lebensbedrohliche Gewässer hat sich Nicoles großer und heldenhafter Bruder gestürzt, um das Leben ihres heiligen Plüsch-Köters zu retten?", options:["Amazonas","Nil","Niagara-Wasserfälle","Aschaff"], a:"Aschaff" },
+    { type:"mc", q:"Was stiehlt Nicole ihrem Bruder regelmäßig?", options:["Geld","Essen","Ehre","Kleidung"], a:"Kleidung" },
     { type:"mc", q:"Nicole ist die Furzkoboldkönigin", options:["Wahr","Falsch"], a:"Wahr" }
-
 ];
 
 let index = 0;
@@ -190,7 +191,7 @@ function renderPuzzle() {
     const div = document.getElementById("puzzleArea");
     const progress = document.querySelector(".progress-bar");
 
-    progress.style.width = ((index)/puzzles.length * 100) + "%";
+    progress.style.width = ((index) / puzzles.length * 100) + "%";
 
     div.innerHTML = `
         <h2>Rätsel ${index+1} von ${puzzles.length}</h2>
@@ -206,7 +207,6 @@ function renderPuzzle() {
             btn.onclick = () => checkAnswer(opt);
             document.getElementById("options").appendChild(btn);
         });
-
     } else {
         document.getElementById("options").innerHTML = `
             <input id="answerInput" placeholder="Antwort...">
@@ -222,18 +222,22 @@ function submitText() {
     checkAnswer(val);
 }
 
-function checkAnswer(userAnswer) {
-    console.log("User clicked:", JSON.stringify(userAnswer));
-    console.log("Correct:", JSON.stringify(p.a));
-
+function checkAnswer(userAnswerRaw) {
     const p = puzzles[index];
 
-    const correct = p.a.trim().toLowerCase();
-    const answer = userAnswer.trim().toLowerCase();
+    const sanitize = str =>
+        str
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+
+    const correct = sanitize(p.a);
+    const user = sanitize(userAnswerRaw);
 
     const feedback = document.getElementById("feedback");
 
-    if (answer === correct) {
+    if (user === correct) {
         feedback.className = "feedback correct";
         feedback.textContent = "Richtig! 💜";
 
@@ -244,7 +248,7 @@ function checkAnswer(userAnswer) {
             } else {
                 renderPuzzle();
             }
-        }, 800);
+        }, 700);
 
     } else {
         feedback.className = "feedback wrong";
@@ -252,8 +256,7 @@ function checkAnswer(userAnswer) {
     }
 }
 
-
-/* =============== ENDING SCREEN ================= */
+/* ================= END SCREEN ================= */
 
 function finish() {
     document.querySelector(".progress-bar").style.width = "100%";
@@ -262,12 +265,10 @@ function finish() {
     const final = document.getElementById("finalArea");
     final.classList.remove("hidden");
 
-    // Musik abspielen
     const song = document.getElementById("loveSong");
     song.volume = 0.5;
     song.play();
 
-    // Konfetti starten
     startConfetti();
 }
 
@@ -297,7 +298,7 @@ function startConfetti() {
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        confetti.forEach((c, i) => {
+        confetti.forEach((c) => {
             ctx.beginPath();
             ctx.fillStyle = c.color;
             ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
@@ -323,8 +324,7 @@ function startConfetti() {
     draw();
 }
 
-/* =========================================== */
-
+/* =============== INIT =============== */
 renderPuzzle();
 </script>
 </body>
