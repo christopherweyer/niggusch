@@ -223,6 +223,9 @@ function submitText() {
 }
 
 function checkAnswer(userAnswer) {
+    console.log("User clicked:", JSON.stringify(userAnswer));
+    console.log("Correct:", JSON.stringify(p.a));
+
     const p = puzzles[index];
 
     const correct = p.a.trim().toLowerCase();
