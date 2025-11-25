@@ -306,4 +306,32 @@ function launchConfetti() {
     speed: 4 + Math.random() * 7,
     rot: Math.random() * 360,
     rotSpeed: Math.random() * 20 - 10,
-    color: ['#ff6bff','#c07bff','#8a37ff','#d14
+    color: ['#ff6bff','#c07bff','#8a37ff','#d14bff','#ff9ef8'][Math.floor(Math.random()*5)]
+  }));
+
+  function update() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      p.y += p.speed;
+      p.rot += p.rotSpeed;
+      if (p.y > canvas.height) p.y = -40;
+      ctx.save();
+      ctx.translate(p.x + p.w/2, p.y + p.h/2);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    requestAnimationFrame(update);
+  }
+  update();
+}
+
+window.addEventListener("resize", () => {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>
