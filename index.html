@@ -170,7 +170,7 @@ textarea {
 const puzzles = [
     { type:"mc", q:"In welchem Jahr wurde Nicole geboren?", options:["2004","2005","2006","2007"], a:"2006" },
     { type:"text", q:"Wie lautet der erste Spitzname, den Nicole von Ihrem extrem gutaussehenden und charmanten Bruder bekam?", a:"Niggusch" },
-    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam Straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele" },
+    { type:"mc", q:"Womit hat Nicole ihr erstes Körperverletzungsdelikt begangen und kam Straffrei davon?", options:["Hammer","Schlagstock","Taser","Ukulele"], a:"Ukulele"},
     { type:"mc", q:"Wer war Nicoles erste große Liebe?", options:["Jonas", "Umut", "Kinderschokolade", "Ein Plüschtierhund namens 'Wau-wau'"], a:"Ein Plüschtierhund namens 'Wau-wau'" },
     { type:"text", q:"Rätsel: Ich habe Städte, aber keine Häuser. Ich habe Berge, aber keine Bäume. Ich habe Wasser, aber keine Fische. Was bin ich?", a:"Karte" },
     { type:"text", q:"Wo war Nicole das erste mal mit Chris alleine im Urlaub?", a:"Amsterdam" },
@@ -224,11 +224,13 @@ function submitText() {
 
 function checkAnswer(userAnswer) {
     const p = puzzles[index];
-    const correct = p.a.toLowerCase();
+
+    const correct = p.a.trim().toLowerCase();
+    const answer = userAnswer.trim().toLowerCase();
 
     const feedback = document.getElementById("feedback");
 
-    if (userAnswer === correct) {
+    if (answer === correct) {
         feedback.className = "feedback correct";
         feedback.textContent = "Richtig! 💜";
 
@@ -246,6 +248,7 @@ function checkAnswer(userAnswer) {
         feedback.textContent = "Leider falsch 😢 Versuchs nochmal!";
     }
 }
+
 
 /* =============== ENDING SCREEN ================= */
 
